@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "42675387493",
+    "firebase_url": "https://dumankakotlin-5d76b-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "dumankakotlin-5d76b",
+    "storage_bucket": "dumankakotlin-5d76b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42675387493:android:80bb9c1f26f8c21ceb1a8c",
+        "android_client_info": {
+          "package_name": "com.example.dumankakotlin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42675387493-q1apgcjvdgbshr4vnsk8qkbfo9jfh1lp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dumankakotlin",
+            "certificate_hash": "bd9f54d764196dfb9c8e1d32373c0534df0433cb"
+          }
+        },
+        {
+          "client_id": "42675387493-dh91n5sesum2qll20kv1aq63jnm8dbf2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr1nfuePSYcp7nvRZzpEa5fqbec3ev93s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42675387493-dh91n5sesum2qll20kv1aq63jnm8dbf2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

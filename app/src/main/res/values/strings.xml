@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DumankaKotlin</string>
+    <string name="default_web_client_id">1900007</string>
+    <string name="title_activity_maps">MapsActivity</string>
+</resources>
