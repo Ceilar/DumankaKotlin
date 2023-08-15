@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -23,11 +24,23 @@ import com.airbnb.lottie.LottieAnimationView
 import com.example.dumankakotlin.databinding.FragmentDumankaBinding
 import com.example.dumankakotlin.ui.theme.DumankaHelperClass
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileWriter
+import java.io.IOException
+import java.io.InputStream
 
 
 class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
@@ -46,9 +59,15 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
     var animationView: LottieAnimationView? = null
     var animationView1: LottieAnimationView? = null
     var list: ArrayList<String>? = null
+    lateinit var pathReference: StorageReference
+    lateinit var database: FirebaseDatabase
     lateinit var myRef: DatabaseReference
+    lateinit var mAuth: FirebaseAuth
     lateinit var user: FirebaseUser
+    var startflag: Boolean = true
+    var storage: FirebaseStorage? = null
     var guesswasmade = false
+    lateinit var storageReference: StorageReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -63,6 +82,13 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
         savedInstanceState: Bundle?
     ): View? {
         guesswasmade = false
+        mAuth = FirebaseAuth.getInstance()
+        user = mAuth.getCurrentUser()!!
+        database =
+            FirebaseDatabase.getInstance("https://dumankakotlin-5d76b-default-rtdb.europe-west1.firebasedatabase.app/")
+        myRef = database.getReference("users")
+        storage = FirebaseStorage.getInstance("gs://dumankakotlin-5d76b.appspot.com")
+
         binding = FragmentDumankaBinding.inflate(layoutInflater)
         profilebtn = requireActivity().findViewById(R.id.profilebtn)
         switchBtn = requireActivity().findViewById(R.id.switchbtn)
@@ -70,6 +96,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
         animationView = binding.animationView
         animationView1 = binding.animationView3
         DumankaHelperClass.initialiseFileReader(requireContext())
+
         val textword = binding.textword
         list1 = ArrayList()
         list1.add(binding.text1d)
@@ -207,6 +234,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
         })
     }
 
+
     fun accessResult(s: Array<String?>, list1: ArrayList<EditText>): Boolean {
         for (i in 0..4) {
             if (s[i] === "зелена") {
@@ -291,6 +319,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
         }, 500)
     }
 
+
     companion object {
 
         private const val ARG_PARAM1 = "param1"
@@ -310,8 +339,45 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
     override fun onPause() {
         super.onPause()
         if (guesswasmade) {
-            DumankaHelperClass.onDumankaEnd()
-            guesswasmade = false
+            try {
+                //Toast.makeText(MainActivity.this, "TEST1", Toast.LENGTH_LONG).show();
+                guesswasmade = false
+                Log.v("readingfile", "Onstop")
+                val uploadfile = File.createTempFile("test", "txt")
+                val writer = BufferedWriter(FileWriter(uploadfile))
+                for (i in list!!.indices) {
+                    writer.write(
+                        """
+                            ${list!![i]}
+                            
+                            """.trimIndent()
+                    )
+                }
+                writer.close()
+                Log.v("readingfile", "File procheten")
+                storageReference = storage!!.getReference()
+                val str: String
+                str = "words/" + user.getUid() + ".txt"
+                pathReference = storageReference.child(str)
+                try {
+                    //Toast.makeText(MainActivity.this, "TEST2", Toast.LENGTH_LONG).show();
+                    val inputStream: InputStream = FileInputStream(uploadfile)
+                    val task: UploadTask = pathReference.putStream(inputStream)
+                    task.addOnFailureListener(object : OnFailureListener {
+                        override fun onFailure(e: Exception) {}
+                    }).addOnCompleteListener(object :
+                        OnCompleteListener<UploadTask.TaskSnapshot?> {
+                        override fun onComplete(task: Task<UploadTask.TaskSnapshot?>) {
+                            Log.v("readingfile", "File zapisan")
+                        }
+                    })
+                } finally {
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         }
     }
+
 }
+

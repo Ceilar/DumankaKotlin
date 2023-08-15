@@ -11,19 +11,14 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import java.io.BufferedReader
-import java.io.BufferedWriter
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.FileReader
-import java.io.FileWriter
 import java.io.IOException
-import java.io.InputStream
 
 
-object DumankaHelperClass {
+object DumankaHelperClass{
     lateinit var pathReference: StorageReference
     lateinit var database: FirebaseDatabase
     lateinit var myRef: DatabaseReference
@@ -33,7 +28,7 @@ object DumankaHelperClass {
     var storage: FirebaseStorage? = null
     var list: ArrayList<String>? = null
     fun initialiseFileReader(context: Context) {
-        Log.v("32131", "sadsa")
+        Log.v("32131","sadsa")
         mAuth = FirebaseAuth.getInstance()
         user = mAuth.getCurrentUser()!!
         database =
@@ -42,7 +37,6 @@ object DumankaHelperClass {
         storage = FirebaseStorage.getInstance("gs://dumankakotlin-5d76b.appspot.com")
         fetchfile(context = context)
     }
-
     private fun fetchfile(context: Context): File? {
         storageReference = storage!!.getReference()
         val str: String
@@ -62,8 +56,7 @@ object DumankaHelperClass {
         }
         return null
     }
-
-    private fun readFile(file: File?, context: Context) {
+    private fun readFile(file: File?,context: Context) {
         var content = ""
         val sbuffer = StringBuffer()
         list = ArrayList()
@@ -90,11 +83,9 @@ object DumankaHelperClass {
             Toast.LENGTH_SHORT
         ).show()
     }
-
     fun returnList(): ArrayList<String>? {
         return this.list
     }
-
     fun checkword(s: String, textword: String?): Array<String?> {
         val input: CharArray
         val file: CharArray
@@ -127,27 +118,4 @@ object DumankaHelperClass {
         return result
     }
 
-    fun onDumankaEnd() {
-        try {
-            val uploadfile = File.createTempFile("test", "txt")
-            val writer = BufferedWriter(FileWriter(uploadfile))
-            for (i in list!!.indices) {
-                writer.write(
-                    list!![i].trimIndent()
-                )
-            }
-            writer.close()
-            storageReference = storage!!.getReference()
-            val str = "words/" + user.getUid() + ".txt"
-            pathReference = storageReference.child(str)
-            try {
-                val inputStream: InputStream = FileInputStream(uploadfile)
-                val task: UploadTask = pathReference.putStream(inputStream)
-                task.addOnFailureListener { }.addOnCompleteListener { }
-            } finally {
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
 }
