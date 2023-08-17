@@ -120,6 +120,9 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
         list2.add(binding.text1d)
         list2.add(binding.text1d)
         list2.add(binding.text1d)
+        list1.forEach {
+            it.isFocusable = false
+        }
 
 
 
@@ -139,6 +142,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
             } else textView.isVisible = false
             list1.forEach {
                 it.setBackgroundResource(R.drawable.border2)
+                it.setText("")
             }
             binding.start1.isVisible = false
             rowx = 0
@@ -280,6 +284,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
                 binding.start1!!.performClick()
                 alertDialog.dismiss()
             }
+
             true
         } else false
     }
@@ -290,11 +295,14 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
         val buttonnewgame = dialogView.findViewById<Button>(R.id.buttonnewgame)
         val header = dialogView.findViewById<TextView>(R.id.header)
         val content1 = dialogView.findViewById<TextView>(R.id.content1)
+        val content2 = dialogView.findViewById<TextView>(R.id.content2)
         vpager.isUserInputEnabled = true
         builder1.setView(dialogView)
         val alertDialog = builder1.create()
         header.text = "О, не!"
         content1.text = "Не успяхте да отгатнете думата!"
+        var wordAtLoss = "Думата беше: $wordtocheck"
+        content2.text = wordAtLoss
         mykeyboard2!!.setVisibility(View.INVISIBLE)
 
         buttonnewgame.setOnClickListener {

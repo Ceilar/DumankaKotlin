@@ -98,6 +98,7 @@
 
         <EditText
             android:id="@+id/text1d"
+            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -115,6 +116,7 @@
             />
         <EditText
             android:id="@+id/text2d"
+            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -132,6 +134,7 @@
            />
         <EditText
             android:id="@+id/text3d"
+            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -148,6 +151,7 @@
             android:digits="абвгдежзийклмнопрстуфхцчшщьъюяАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЬЮЯ"/>
         <EditText
             android:id="@+id/text4d"
+            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -164,6 +168,7 @@
             android:digits="абвгдежзийклмнопрстуфхцчшщьъюяАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЬЮЯ" />
         <EditText
             android:id="@+id/text5d"
+            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -194,6 +199,7 @@
 
         <EditText
             android:id="@+id/text6d"
+            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -212,6 +218,7 @@
         </EditText>
         <EditText
             android:id="@+id/text7d"
+            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -230,6 +237,7 @@
         <EditText
             android:id="@+id/text8d"
             android:layout_width="0dp"
+            android:focusable="false"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="2dp"
@@ -248,6 +256,7 @@
         <EditText
             android:id="@+id/text9d"
             android:layout_width="0dp"
+            android:focusable="false"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="2dp"
@@ -266,6 +275,7 @@
         <EditText
             android:id="@+id/text10d"
             android:layout_width="0dp"
+            android:focusable="false"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="2dp"
@@ -298,6 +308,7 @@
         <EditText
             android:id="@+id/text11d"
             android:layout_width="0dp"
+            android:focusable="false"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="5dp"
@@ -315,6 +326,7 @@
         </EditText>
         <EditText
             android:id="@+id/text12d"
+            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -334,6 +346,7 @@
         <EditText
             android:id="@+id/text13d"
             android:layout_width="0dp"
+            android:focusable="false"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="2dp"
@@ -352,6 +365,7 @@
         <EditText
             android:id="@+id/text14d"
             android:layout_width="0dp"
+            android:focusable="false"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="2dp"
@@ -369,6 +383,7 @@
         </EditText>
         <EditText
             android:id="@+id/text15d"
+            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -401,6 +416,7 @@
 
         <EditText
             android:id="@+id/text16d"
+            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -419,6 +435,7 @@
         </EditText>
         <EditText
             android:id="@+id/text17d"
+            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -437,6 +454,7 @@
         <EditText
             android:id="@+id/text18d"
             android:layout_width="0dp"
+            android:focusable="false"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="2dp"
@@ -455,6 +473,7 @@
         <EditText
             android:id="@+id/text19d"
             android:layout_width="0dp"
+            android:focusable="false"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="2dp"
@@ -506,6 +525,7 @@
         <EditText
             android:id="@+id/text21d"
             android:layout_width="0dp"
+            android:focusable="false"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
@@ -524,6 +544,7 @@
         <EditText
             android:id="@+id/text22d"
             android:layout_width="0dp"
+            android:focusable="false"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="2dp"
@@ -542,6 +563,7 @@
         <EditText
             android:id="@+id/text23d"
             android:layout_width="0dp"
+            android:focusable="false"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="2dp"
@@ -560,6 +582,7 @@
         <EditText
             android:id="@+id/text24d"
             android:layout_width="0dp"
+            android:focusable="false"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="2dp"
@@ -580,6 +603,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:focusable="false"
             android:layout_marginLeft="2dp"
             android:padding="0dp"
             android:gravity="center"

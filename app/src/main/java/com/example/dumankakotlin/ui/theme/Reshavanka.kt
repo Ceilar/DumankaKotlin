@@ -329,12 +329,15 @@ class Reshavanka : Fragment() {
         val buttonnewgame = dialogView.findViewById<Button>(R.id.buttonnewgame)
         val header = dialogView.findViewById<TextView>(R.id.header)
         val content1 = dialogView.findViewById<TextView>(R.id.content1)
+        val content2 = dialogView.findViewById<TextView>(R.id.content2)
         vpager!!.isUserInputEnabled = true
         builder.setView(dialogView)
         val alertDialog = builder.create()
 
         header.text = "О, не!"
         content1.text = "Не успяхте да отгатнете уравнението!"
+        var wordAtLoss = "Думата беше: $equationToCheck"
+        content2.text = wordAtLoss
         mykeyboard!!.setVisibility(View.INVISIBLE)
 
         buttonnewgame.setOnClickListener {
