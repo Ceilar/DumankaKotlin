@@ -136,14 +136,17 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
 
 
             var textView: TextView = binding.textView3
+            textView.isVisible = false
             if (user.uid == "znZsrNf4oeTD6Ahmrecm92IDRjM2") {
                 textView.isVisible = true
                 textView.setText(wordtocheck)
-            } else textView.isVisible = false
-            list1.forEach {
-                it.setBackgroundResource(R.drawable.border2)
-                it.setText("")
             }
+
+            for(i in 0..24){
+                list1[i].setBackgroundResource(R.drawable.border2)
+                list1[i].setText("")
+            }
+
             binding.start1.isVisible = false
             rowx = 0
             startdumanka(list1, textword, 0)
