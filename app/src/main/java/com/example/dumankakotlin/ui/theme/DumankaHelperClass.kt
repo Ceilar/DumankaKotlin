@@ -125,7 +125,7 @@ object DumankaHelperClass{
         }
         return result
     }
-    fun onPauseDumanka(){
+    fun onPauseDumanka(list: ArrayList<String>?){
         try {
             //Toast.makeText(MainActivity.this, "TEST1", Toast.LENGTH_LONG).show();
             Log.v("readingfile", "Onstop")
@@ -133,7 +133,9 @@ object DumankaHelperClass{
             val writer = BufferedWriter(FileWriter(uploadfile))
             for (i in list!!.indices) {
                 writer.write(
-                    list!![i].trimIndent()
+
+                    list[i].trimIndent() + "\n"
+
                 )
             }
             writer.close()

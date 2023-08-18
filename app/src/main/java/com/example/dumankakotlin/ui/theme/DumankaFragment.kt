@@ -137,7 +137,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
 
             var textView: TextView = binding.textView3
             textView.isVisible = false
-            if (user.uid == "znZsrNf4oeTD6Ahmrecm92IDRjM2") {
+            if (user.email == "dumanka.reshavanka@gmail.com") {
                 textView.isVisible = true
                 textView.setText(wordtocheck)
             }
@@ -341,7 +341,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
     override fun onPause() {
         super.onPause()
         if (guesswasmade) {
-            DumankaHelperClass.onPauseDumanka()
+            DumankaHelperClass.onPauseDumanka(list)
             guesswasmade = false
         }
     }

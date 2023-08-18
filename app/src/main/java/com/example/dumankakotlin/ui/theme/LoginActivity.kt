@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.dumankakotlin.ui.theme.FileHandlerClass
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -77,38 +78,50 @@ class LoginActivity : AppCompatActivity() {
                 val firebaseUser = firebaseAuth!!.currentUser
                 val uid = firebaseUser!!.uid
                 val email = firebaseUser!!.email
-                rootNode = FirebaseDatabase.getInstance("https://dumankakotlin-5d76b-default-rtdb.europe-west1.firebasedatabase.app/")
+                rootNode =
+                    FirebaseDatabase.getInstance("https://dumankakotlin-5d76b-default-rtdb.europe-west1.firebasedatabase.app/")
                 reference = rootNode!!.getReference("users")
                 if (authResult.additionalUserInfo!!.isNewUser) {
-                    createnewfile(firebaseUser.uid)
-                    val builder = AlertDialog.Builder(this@LoginActivity)
-                    val viewGroup = findViewById<ViewGroup>(android.R.id.content)
-                    val dialogView = LayoutInflater.from(this@LoginActivity)
-                        .inflate(R.layout.logindialog, viewGroup, false)
-                    val regbtn = dialogView.findViewById<Button>(R.id.registrationbtn)
-                    //TextView header = dialogView.findViewById(R.id.header2);
-                    val name1 = dialogView.findViewById<EditText>(R.id.name)
-                    builder.setView(dialogView)
-                    val alertDialog = builder.create()
-                    regbtn.setOnClickListener {
-                        val username = name1.text.toString()
-                        val user = UserHelperClass(email, username, uid, 0, 0)
-                        reference!!.child(uid).setValue(user)
+                    if (FileHandlerClass.createNewFile(firebaseUser.uid)) {
+                        //createnewfile(firebaseUser.uid)
+                        val builder = AlertDialog.Builder(this@LoginActivity)
+                        val viewGroup = findViewById<ViewGroup>(android.R.id.content)
+                        val dialogView = LayoutInflater.from(this@LoginActivity)
+                            .inflate(R.layout.logindialog, viewGroup, false)
+                        val regbtn = dialogView.findViewById<Button>(R.id.registrationbtn)
+                        //TextView header = dialogView.findViewById(R.id.header2);
+                        val name1 = dialogView.findViewById<EditText>(R.id.name)
+                        builder.setView(dialogView)
+                        val alertDialog = builder.create()
+                        regbtn.setOnClickListener {
+                            val username = name1.text.toString()
+                            val user = UserHelperClass(email, username, uid, 0, 0)
+                            reference!!.child(uid).setValue(user)
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Успешна регистрация!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            val imm =
+                                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                            imm.toggleSoftInput(
+                                InputMethodManager.HIDE_IMPLICIT_ONLY,
+                                0
+                            )
+                            navigateToSecondActivity()
+                            alertDialog.dismiss()
+                        }
+                        alertDialog.show()
+                    } else {
                         Toast.makeText(
                             this@LoginActivity,
-                            "Успешна регистрация!",
+                            "Проверете интернет връзката си, след което опитайте да се регистрирате отново!",
                             Toast.LENGTH_SHORT
                         ).show()
-                        val imm =
-                            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                        imm.toggleSoftInput(
-                            InputMethodManager.HIDE_IMPLICIT_ONLY,
-                            0
-                        )
-                        navigateToSecondActivity()
-                        alertDialog.dismiss()
+                        firebaseAuth!!.currentUser?.delete()
+                        finish()
+                        recreate()
                     }
-                    alertDialog.show()
                 } else {
                     Toast.makeText(this@LoginActivity, "Успешно влизане!", Toast.LENGTH_SHORT)
                         .show()
