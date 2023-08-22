@@ -21,26 +21,26 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 
 class MainActivity : AppCompatActivity() {
-    lateinit var gso: GoogleSignInOptions
-    var gsc: GoogleSignInClient? = null
-    lateinit var switchBtn: Switch
-    lateinit var wordbtn: Button
-    lateinit var startbtn: Button
-    lateinit var mathbtn: Button
-    lateinit var vpager: ViewPager2
-    lateinit var equations: Equations
-    var viewPagerAdapter: ViewPagerAdapter? = null
-    lateinit var profilebtn: Button
-    lateinit var myPreferences: SharedPreferences
-    lateinit var editor: SharedPreferences.Editor
-    var guesswasmade = false
-    var startflag = false
-    var storage: FirebaseStorage? = null
-    lateinit var database: FirebaseDatabase
-    lateinit var myRef: DatabaseReference
-    lateinit var mAuth: FirebaseAuth
-    lateinit var user: FirebaseUser
-    var flag1 = false
+    private lateinit var gso: GoogleSignInOptions
+    private var gsc: GoogleSignInClient? = null
+    private lateinit var switchBtn: Switch
+    private lateinit var wordbtn: Button
+    private lateinit var startbtn: Button
+    private lateinit var mathbtn: Button
+    private lateinit var vpager: ViewPager2
+    private lateinit var equations: Equations
+    private var viewPagerAdapter: ViewPagerAdapter? = null
+    private lateinit var profilebtn: Button
+    private lateinit var myPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
+    private var guesswasmade = false
+    private var startflag = false
+    private var storage: FirebaseStorage? = null
+    private lateinit var database: FirebaseDatabase
+    private lateinit var myRef: DatabaseReference
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var user: FirebaseUser
+    private var flag1 = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main);
@@ -48,18 +48,19 @@ class MainActivity : AppCompatActivity() {
             .requestEmail()
             .build()
         gsc = GoogleSignIn.getClient(this, gso)
-        mAuth = FirebaseAuth.getInstance()
-        user = mAuth.getCurrentUser()!!
+        firebaseAuth = FirebaseAuth.getInstance()
+        user = firebaseAuth.currentUser!!
         database =
             FirebaseDatabase.getInstance("https://dumankakotlin-5d76b-default-rtdb.europe-west1.firebasedatabase.app/")
         myRef = database.getReference("users")
         storage = FirebaseStorage.getInstance("gs://dumankakotlin-5d76b.appspot.com")
-        profilebtn = findViewById<Button>(R.id.profilebtn)
-        switchBtn = findViewById<Switch>(R.id.switchbtn)
-        wordbtn = findViewById<Button>(R.id.wordbtn)
-        mathbtn = findViewById<Button>(R.id.mathbtn)
-        vpager = findViewById<ViewPager2>(R.id.viewpager)
-        startbtn = findViewById<Button>(R.id.start1)
+        checkUserName()
+        profilebtn = findViewById(R.id.profilebtn)
+        switchBtn = findViewById(R.id.switchbtn)
+        wordbtn = findViewById(R.id.wordbtn)
+        mathbtn = findViewById(R.id.mathbtn)
+        vpager = findViewById(R.id.viewpager)
+        startbtn = findViewById(R.id.start1)
         startbtn.isVisible = false
         flag1 = true
         guesswasmade = false
@@ -69,34 +70,34 @@ class MainActivity : AppCompatActivity() {
         startflag = true
         editor = getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit()
 
-        val switch_status = myPreferences.getBoolean(SWITCH_STATUS, false)
-        switchBtn.setChecked(switch_status)
-        if (switch_status) {
+        val switchStatus = myPreferences.getBoolean(SWITCH_STATUS, false)
+        switchBtn.isChecked = switchStatus
+        if (switchStatus) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
         switchBtn.setOnClickListener(View.OnClickListener {
-            if (switchBtn.isChecked()) {
+            if (switchBtn.isChecked) {
                 editor.putBoolean(SWITCH_STATUS, true)
                 editor.apply()
-                switchBtn.setChecked(true)
+                switchBtn.isChecked = true
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {
                 editor.putBoolean(SWITCH_STATUS, false)
                 editor.apply()
-                switchBtn.setChecked(false)
+                switchBtn.isChecked = false
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
         })
 
-        profilebtn.setEnabled(true)
+        profilebtn.isEnabled = true
         profilebtn.setOnClickListener(View.OnClickListener {
             val intent = Intent(this@MainActivity, ProfileActivity::class.java)
             startActivity(intent)
         })
 
-        vpager.setAdapter(viewPagerAdapter)
+        vpager.adapter = viewPagerAdapter
         vpager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -110,7 +111,20 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+    private fun checkUserName(){
+        val firebaseUser = firebaseAuth.currentUser
+        myRef.child(firebaseUser!!.uid).get().addOnCompleteListener { task ->
+            val dataSnapshot = task.result
+            val username = dataSnapshot.child("name").value.toString()
+            if(username==""){
+                firebaseAuth.currentUser?.delete()
+                finish()
+                val intent1 = Intent(this@MainActivity,LoginActivity::class.java)
+                startActivity(intent1)
+            }
 
+        }
+    }
     override fun recreate() {
         finish()
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)

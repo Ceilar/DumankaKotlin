@@ -22,21 +22,17 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import java.io.File
 
 
 class LoginActivity : AppCompatActivity() {
     //var gso: GoogleSignInOptions? = null
-    var gsc: GoogleSignInClient? = null
-    lateinit var googleBtn: Button
+    private var gsc: GoogleSignInClient? = null
+    private lateinit var googleBtn: Button
     private var firebaseAuth: FirebaseAuth? = null
-    var rootNode: FirebaseDatabase? = null
-    var reference: DatabaseReference? = null
-    var storageReference: StorageReference? = null
-    var storage: FirebaseStorage? = null
-    var localFile: File? = null
-    var pathReference: StorageReference? = null
+    private var rootNode: FirebaseDatabase? = null
+    private var reference: DatabaseReference? = null
+    private var storage: FirebaseStorage? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -77,19 +73,17 @@ class LoginActivity : AppCompatActivity() {
             .addOnSuccessListener { authResult ->
                 val firebaseUser = firebaseAuth!!.currentUser
                 val uid = firebaseUser!!.uid
-                val email = firebaseUser!!.email
+                val email = firebaseUser.email
                 rootNode =
                     FirebaseDatabase.getInstance("https://dumankakotlin-5d76b-default-rtdb.europe-west1.firebasedatabase.app/")
                 reference = rootNode!!.getReference("users")
                 if (authResult.additionalUserInfo!!.isNewUser) {
                     if (FileHandlerClass.createNewFile(firebaseUser.uid)) {
-                        //createnewfile(firebaseUser.uid)
                         val builder = AlertDialog.Builder(this@LoginActivity)
                         val viewGroup = findViewById<ViewGroup>(android.R.id.content)
                         val dialogView = LayoutInflater.from(this@LoginActivity)
                             .inflate(R.layout.logindialog, viewGroup, false)
                         val regbtn = dialogView.findViewById<Button>(R.id.registrationbtn)
-                        //TextView header = dialogView.findViewById(R.id.header2);
                         val name1 = dialogView.findViewById<EditText>(R.id.name)
                         builder.setView(dialogView)
                         val alertDialog = builder.create()
@@ -131,20 +125,9 @@ class LoginActivity : AppCompatActivity() {
             .addOnFailureListener { }
     }
 
-    fun navigateToSecondActivity() {
+    private fun navigateToSecondActivity() {
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
         startActivity(intent)
         finish()
-    }
-
-    fun createnewfile(uid: String) {
-        storageReference = storage!!.reference
-        pathReference = storageReference!!.child("words/words.txt")
-        val SIZE = (512 * 512).toLong()
-        pathReference!!.getBytes(SIZE).addOnSuccessListener { bytes ->
-            val riversRef = storageReference!!.child("words/$uid.txt")
-            val uploadTask = riversRef.putBytes(bytes!!)
-            uploadTask.addOnFailureListener { }.addOnSuccessListener { }
-        }.addOnFailureListener { }
     }
 }

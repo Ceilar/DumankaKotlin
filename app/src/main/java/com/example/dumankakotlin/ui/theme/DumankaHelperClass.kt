@@ -3,10 +3,7 @@ package com.example.dumankakotlin.ui.theme
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
@@ -14,16 +11,11 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import java.io.BufferedReader
-import java.io.BufferedWriter
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.FileReader
-import java.io.FileWriter
 import java.io.IOException
-import java.io.InputStream
 
 
 object DumankaHelperClass{
@@ -46,9 +38,9 @@ object DumankaHelperClass{
         fetchfile(context = context)
     }
     private fun fetchfile(context: Context): File? {
-        storageReference = storage!!.getReference()
+        storageReference = storage!!.reference
         val str: String
-        str = "words/" + user!!.getUid() + ".txt"
+        str = "words/" + user.uid + ".txt"
         pathReference = storageReference.child(str)
         try {
             val localFile = File.createTempFile(user.getUid(), ".txt")
@@ -125,41 +117,5 @@ object DumankaHelperClass{
         }
         return result
     }
-    fun onPauseDumanka(list: ArrayList<String>?){
-        try {
-            //Toast.makeText(MainActivity.this, "TEST1", Toast.LENGTH_LONG).show();
-            Log.v("readingfile", "Onstop")
-            val uploadfile = File.createTempFile("test", "txt")
-            val writer = BufferedWriter(FileWriter(uploadfile))
-            for (i in list!!.indices) {
-                writer.write(
 
-                    list[i].trimIndent() + "\n"
-
-                )
-            }
-            writer.close()
-            Log.v("readingfile", "File procheten")
-            storageReference = storage!!.getReference()
-            val str: String
-            str = "words/" + user.getUid() + ".txt"
-            pathReference = storageReference.child(str)
-            try {
-                //Toast.makeText(MainActivity.this, "TEST2", Toast.LENGTH_LONG).show();
-                val inputStream: InputStream = FileInputStream(uploadfile)
-                val task: UploadTask = pathReference.putStream(inputStream)
-                task.addOnFailureListener(object : OnFailureListener {
-                    override fun onFailure(e: Exception) {}
-                }).addOnCompleteListener(object :
-                    OnCompleteListener<UploadTask.TaskSnapshot?> {
-                    override fun onComplete(task: Task<UploadTask.TaskSnapshot?>) {
-                        Log.v("readingfile", "File zapisan")
-                    }
-                })
-            } finally {
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
 }

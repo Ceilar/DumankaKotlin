@@ -33,11 +33,11 @@ class ProfileActivity : AppCompatActivity() {
         profilepic = findViewById(R.id.profilepic)
         logoutbtn = findViewById(R.id.logoutbtn)
         words = findViewById(R.id.words)
-        name.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG)
-        email.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG)
-        words.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG)
+        name.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        email.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        words.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         equations = findViewById(R.id.equations)
-        equations.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG)
+        equations.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         mAuth = FirebaseAuth.getInstance()
         val user = mAuth!!.currentUser
         database =
@@ -49,13 +49,13 @@ class ProfileActivity : AppCompatActivity() {
             val wordsguessed = "Отгатнати думи: " + dataSnapshot.child("words").value.toString()
             val equationsguessed =
                 "Отгатнати уравнения: " + dataSnapshot.child("equations").value.toString()
-            name.setText(username)
-            equations.setText(equationsguessed)
-            words.setText(wordsguessed)
+            name.text = username
+            equations.text = equationsguessed
+            words.text = wordsguessed
         }
         val imgUri = user.photoUrl
         Picasso.get().load(imgUri).into(profilepic)
-        email.setText(user.email)
+        email.text = user.email
         logoutbtn.setOnClickListener(View.OnClickListener {
             FirebaseAuth.getInstance().signOut()
             val intent = Intent(this@ProfileActivity, LoginActivity::class.java)

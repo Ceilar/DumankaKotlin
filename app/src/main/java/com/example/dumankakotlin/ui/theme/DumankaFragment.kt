@@ -22,6 +22,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.airbnb.lottie.LottieAnimationView
 import com.example.dumankakotlin.databinding.FragmentDumankaBinding
 import com.example.dumankakotlin.ui.theme.DumankaHelperClass
+import com.example.dumankakotlin.ui.theme.FileHandlerClass
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -31,34 +32,30 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 
 
 class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
-    lateinit var binding: FragmentDumankaBinding
-    lateinit var list1: ArrayList<EditText>
-    var list2 = ArrayList<EditText>(5)
-    var mykeyboard2: MyKeyboard2? = null
-    var rowx: Int = 0
-    lateinit var wordtocheck: String
-    lateinit var profilebtn: Button
-    lateinit var switchBtn: Button
-    lateinit var vpager: ViewPager2
-    var animationView: LottieAnimationView? = null
-    var animationView1: LottieAnimationView? = null
-    var list: ArrayList<String>? = null
-    lateinit var pathReference: StorageReference
-    lateinit var database: FirebaseDatabase
-    lateinit var myRef: DatabaseReference
-    lateinit var mAuth: FirebaseAuth
-    lateinit var user: FirebaseUser
-    var startflag: Boolean = true
-    var storage: FirebaseStorage? = null
-    var guesswasmade = false
-    lateinit var storageReference: StorageReference
+    private lateinit var binding: FragmentDumankaBinding
+    private lateinit var list1: ArrayList<EditText>
+    private var list2 = ArrayList<EditText>(5)
+    private var mykeyboard2: MyKeyboard2? = null
+    private var rowx: Int = 0
+    private lateinit var wordtocheck: String
+    private lateinit var profilebtn: Button
+    private lateinit var switchBtn: Button
+    private lateinit var vpager: ViewPager2
+    private var animationView: LottieAnimationView? = null
+    private var animationView1: LottieAnimationView? = null
+    private var list: ArrayList<String>? = null
+    private lateinit var database: FirebaseDatabase
+    private lateinit var myRef: DatabaseReference
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var user: FirebaseUser
+    private var storage: FirebaseStorage? = null
+    private var guesswasmade = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -74,7 +71,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
     ): View? {
         guesswasmade = false
         mAuth = FirebaseAuth.getInstance()
-        user = mAuth.getCurrentUser()!!
+        user = mAuth.currentUser!!
         database =
             FirebaseDatabase.getInstance("https://dumankakotlin-5d76b-default-rtdb.europe-west1.firebasedatabase.app/")
         myRef = database.getReference("users")
@@ -139,10 +136,10 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
             textView.isVisible = false
             if (user.email == "dumanka.reshavanka@gmail.com") {
                 textView.isVisible = true
-                textView.setText(wordtocheck)
+                textView.text = wordtocheck
             }
 
-            for(i in 0..24){
+            for (i in 0..24) {
                 list1[i].setBackgroundResource(R.drawable.border2)
                 list1[i].setText("")
             }
@@ -155,11 +152,11 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
         return binding.root
     }
 
-    fun startdumanka(list1: ArrayList<EditText>, textword: EditText, row: Int) {
+    private fun startdumanka(list1: ArrayList<EditText>, textword: EditText, row: Int) {
         // guesswasmade = false
         if (row == 0) {
             mykeyboard2 = binding.keyboard2
-            mykeyboard2!!.setVisibility(View.VISIBLE)
+            mykeyboard2!!.visibility = View.VISIBLE
         }
         val j = row * 5
         for (i in 0..4) {
@@ -167,7 +164,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
         }
         val ic = textword.onCreateInputConnection(EditorInfo())
         mykeyboard2!!.setInputConnection(ic)
-        mykeyboard2!!.setActivated(true)
+        mykeyboard2!!.isActivated = true
         textword.setText("")
         textword.setBackgroundColor(Color.TRANSPARENT)
         textword.isCursorVisible = false
@@ -221,8 +218,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
 
             override fun afterTextChanged(s: Editable) {
                 text = textword.text.toString().toCharArray()
-                var i: Int
-                i = 0
+                var i: Int = 0
                 while (i < text.size) {
                     list2[i].setText(text[i].toString())
                     i++
@@ -233,7 +229,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
     }
 
 
-    fun accessResult(s: Array<String?>, list1: ArrayList<EditText>): Boolean {
+    private fun accessResult(s: Array<String?>, list1: ArrayList<EditText>): Boolean {
         for (i in 0..4) {
             if (s[i] === "зелена") {
                 list1[i].setBackgroundResource(R.drawable.bordergreen)
@@ -242,8 +238,8 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
             } else list1[i].setBackgroundResource(R.drawable.bordergray)
         }
         return if (s[0] === "зелена" && s[1] === "зелена" && s[2] === "зелена" && s[3] === "зелена" && s[4] === "зелена") {
-            mykeyboard2!!.setVisibility(View.INVISIBLE)
-            myRef.child(user.getUid()).child("words").setValue(ServerValue.increment(+1))
+            mykeyboard2!!.visibility = View.INVISIBLE
+            myRef.child(user.uid).child("words").setValue(ServerValue.increment(+1))
             guesswasmade = true
             vpager.isUserInputEnabled = true
 
@@ -263,12 +259,12 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
             val buttonnewgame = dialogView.findViewById<Button>(R.id.buttonnewgame)
             val guessedwords = dialogView.findViewById<TextView>(R.id.guessedwords)
             builder.setView(dialogView)
-            myRef.child(user.getUid()).get()
+            myRef.child(user.uid).get()
                 .addOnCompleteListener(object : OnCompleteListener<DataSnapshot?> {
                     override fun onComplete(task: Task<DataSnapshot?>) {
-                        val dataSnapshot: DataSnapshot? = task.getResult()
+                        val dataSnapshot: DataSnapshot? = task.result
                         val test1 = "Отгатнати думи: " + java.lang.String.valueOf(
-                            dataSnapshot!!.child("words").getValue()
+                            dataSnapshot!!.child("words").value
                         )
                         guessedwords.text = test1
                     }
@@ -276,15 +272,15 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
             val alertDialog = builder.create()
             val handler = Handler(Looper.getMainLooper())
             handler.postDelayed({
-                profilebtn!!.isEnabled = true
-                switchBtn!!.isEnabled = true
+                profilebtn.isEnabled = true
+                switchBtn.isEnabled = true
                 alertDialog.show()
             }, 1500)
             binding.start1.isVisible = true
             buttonnewgame.setOnClickListener {
                 animationView!!.setMinAndMaxProgress(0.0f, 0.0f)
                 animationView1!!.setMinAndMaxProgress(0.0f, 0.0f)
-                binding.start1!!.performClick()
+                binding.start1.performClick()
                 alertDialog.dismiss()
             }
 
@@ -292,7 +288,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
         } else false
     }
 
-    fun dialogloss() {
+    private fun dialogloss() {
         val builder1 = AlertDialog.Builder(this.context)
         val dialogView: View = LayoutInflater.from(this.context).inflate(R.layout.dialog1l, null)
         val buttonnewgame = dialogView.findViewById<Button>(R.id.buttonnewgame)
@@ -306,7 +302,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
         content1.text = "Не успяхте да отгатнете думата!"
         var wordAtLoss = "Думата беше: $wordtocheck"
         content2.text = wordAtLoss
-        mykeyboard2!!.setVisibility(View.INVISIBLE)
+        mykeyboard2!!.visibility = View.INVISIBLE
 
         buttonnewgame.setOnClickListener {
             binding.start1.performClick()
@@ -341,7 +337,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
     override fun onPause() {
         super.onPause()
         if (guesswasmade) {
-            DumankaHelperClass.onPauseDumanka(list)
+            FileHandlerClass.onPauseDumanka(list)
             guesswasmade = false
         }
     }

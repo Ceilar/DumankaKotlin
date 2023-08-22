@@ -77,7 +77,7 @@ class Reshavanka : Fragment() {
         animationView = binding.animationView1
         animationView1 = binding.animationView2
         mAuth = FirebaseAuth.getInstance()
-        user = mAuth.getCurrentUser()!!
+        user = mAuth.currentUser!!
         database =
             FirebaseDatabase.getInstance("https://dumankakotlin-5d76b-default-rtdb.europe-west1.firebasedatabase.app/")
         myRef = database.getReference("users")
@@ -139,16 +139,16 @@ class Reshavanka : Fragment() {
 
 
         binding.start1.setOnClickListener(View.OnClickListener {
-            vpager.setUserInputEnabled(false)
-            profilebtn.setEnabled(false)
-            switchBtn.setEnabled(false)
+            vpager.isUserInputEnabled = false
+            profilebtn.isEnabled = false
+            switchBtn.isEnabled = false
             vpager.requestTransform()
             equationToCheck = equations.returnEquation()
             for (i in 0..41) {
                 list1[i].setBackgroundResource(R.drawable.border2)
                 list1[i].setText("")
             }
-            binding.start1.setVisibility(View.GONE)
+            binding.start1.visibility = View.GONE
             rowx = 0
             startreshavanka(list1, equation, 0)
         })
@@ -157,18 +157,18 @@ class Reshavanka : Fragment() {
         //return inflater.inflate(R.layout.fragment_reshavanka, container, false)
     }
 
-    fun startreshavanka(list1: ArrayList<EditText>, equation: EditText, row: Int) {
+    private fun startreshavanka(list1: ArrayList<EditText>, equation: EditText, row: Int) {
         val j = row * 7
         for (i in 0..6) {
             list3[i] = list1[i + j]
         }
         if (row == 0) {
             mykeyboard = binding.keyboard
-            mykeyboard!!.setVisibility(View.VISIBLE)
+            mykeyboard!!.visibility = View.VISIBLE
         }
         val ic = equation.onCreateInputConnection(EditorInfo())
         mykeyboard!!.setInputConnection(ic)
-        mykeyboard!!.setActivated(true)
+        mykeyboard!!.isActivated = true
         equation.setText("")
         equation.setBackgroundColor(Color.TRANSPARENT)
         equation.isCursorVisible = false
@@ -189,7 +189,7 @@ class Reshavanka : Fragment() {
                         }
                     }
                     if (rowx == 6 && !accessResult1(result1, list3, equation)) {
-                        dialogloss(1)
+                        dialogloss()
                     }
                     return@OnEditorActionListener false
                 } else {
@@ -221,8 +221,7 @@ class Reshavanka : Fragment() {
 
             override fun afterTextChanged(s: Editable) {
                 text = equation.text.toString().toCharArray()
-                var i: Int
-                i = 0
+                var i: Int = 0
                 while (i < text.size) {
                     list3[i].setText(text[i].toString())
                     i++
@@ -232,7 +231,7 @@ class Reshavanka : Fragment() {
         })
     }
 
-    fun checkequation(s: String, textword: String?): Array<String?> {
+    private fun checkequation(s: String, textword: String?): Array<String?> {
         val input: CharArray
         val file: CharArray
         val result = arrayOfNulls<String>(7)
@@ -277,21 +276,21 @@ class Reshavanka : Fragment() {
         return if (s[0] === "зелена" && s[1] === "зелена" && s[2] === "зелена" && s[3] === "зелена"
             && s[4] === "зелена" && s[5] === "зелена" && s[6] === "зелена"
         ) {
-            myRef.child(user.getUid()).child("equations").setValue(ServerValue.increment(+1))
-            vpager!!.isUserInputEnabled = true
-            mykeyboard!!.setVisibility(View.INVISIBLE)
-            binding.start1!!.visibility = View.VISIBLE
+            myRef.child(user.uid).child("equations").setValue(ServerValue.increment(+1))
+            vpager.isUserInputEnabled = true
+            mykeyboard!!.visibility = View.INVISIBLE
+            binding.start1.visibility = View.VISIBLE
             val builder = AlertDialog.Builder(this.context)
             val dialogView: View = layoutInflater.inflate(R.layout.dialog1w, null)
             val buttonnewgame = dialogView.findViewById<Button>(R.id.buttonnewgame)
             val equationsguessd = dialogView.findViewById<TextView>(R.id.equationsguessed)
             builder.setView(dialogView)
-            myRef.child(user.getUid()).get()
+            myRef.child(user.uid).get()
                 .addOnCompleteListener(object : OnCompleteListener<DataSnapshot?> {
                     override fun onComplete(task: Task<DataSnapshot?>) {
-                        val dataSnapshot: DataSnapshot? = task.getResult()
+                        val dataSnapshot: DataSnapshot? = task.result
                         val test1 = "Отгатнати уравнения: " + java.lang.String.valueOf(
-                            dataSnapshot!!.child("equations").getValue()
+                            dataSnapshot!!.child("equations").value
                         )
                         equationsguessd.text = test1
                     }
@@ -300,7 +299,7 @@ class Reshavanka : Fragment() {
             buttonnewgame.setOnClickListener {
                 animationView!!.setMinAndMaxProgress(0.0f, 0.0f)
                 animationView1!!.setMinAndMaxProgress(0.0f, 0.0f)
-                binding.start1!!.performClick()
+                binding.start1.performClick()
                 alertDialog.dismiss()
             }
             animationView!!.setMinAndMaxProgress(0.0f, 1.0f)
@@ -315,41 +314,41 @@ class Reshavanka : Fragment() {
             animationView!!.playAnimation()
             val handler = Handler(Looper.getMainLooper())
             handler.postDelayed({
-                profilebtn!!.isEnabled = true
-                switchBtn!!.isEnabled = true
+                profilebtn.isEnabled = true
+                switchBtn.isEnabled = true
                 alertDialog.show()
             }, 1500)
             true
         } else false
     }
 
-    fun dialogloss(i: Int) {
+    private fun dialogloss() {
         val builder = AlertDialog.Builder(this.context)
         val dialogView: View = layoutInflater.inflate(R.layout.dialog1l, null)
         val buttonnewgame = dialogView.findViewById<Button>(R.id.buttonnewgame)
         val header = dialogView.findViewById<TextView>(R.id.header)
         val content1 = dialogView.findViewById<TextView>(R.id.content1)
         val content2 = dialogView.findViewById<TextView>(R.id.content2)
-        vpager!!.isUserInputEnabled = true
+        vpager.isUserInputEnabled = true
         builder.setView(dialogView)
         val alertDialog = builder.create()
 
         header.text = "О, не!"
         content1.text = "Не успяхте да отгатнете уравнението!"
-        var wordAtLoss = "Думата беше: $equationToCheck"
+        var wordAtLoss = "Уравнението беше: $equationToCheck"
         content2.text = wordAtLoss
-        mykeyboard!!.setVisibility(View.INVISIBLE)
+        mykeyboard!!.visibility = View.INVISIBLE
 
         buttonnewgame.setOnClickListener {
-            binding.start1!!.performClick()
+            binding.start1.performClick()
             alertDialog.dismiss()
         }
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
             alertDialog.show()
-            profilebtn!!.isEnabled = true
-            switchBtn!!.isEnabled = true
-            binding.start1!!.visibility = View.VISIBLE
+            profilebtn.isEnabled = true
+            switchBtn.isEnabled = true
+            binding.start1.visibility = View.VISIBLE
         }, 500)
     }
 
