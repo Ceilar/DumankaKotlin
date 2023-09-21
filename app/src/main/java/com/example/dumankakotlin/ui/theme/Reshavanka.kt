@@ -231,9 +231,9 @@ class Reshavanka : Fragment() {
         })
     }
 
-    private fun checkequation(s: String, textword: String?): Array<String?> {
+    private fun checkequation(equationInput: String, equationToCheck: String?): Array<String?> {
         val input: CharArray
-        val file: CharArray
+        val check: CharArray
         val result = arrayOfNulls<String>(7)
         result[0] = "сива"
         result[1] = "сива"
@@ -242,22 +242,22 @@ class Reshavanka : Fragment() {
         result[4] = "сива"
         result[5] = "сива"
         result[6] = "сива"
-        input = s.toCharArray()
-        file = textword!!.toCharArray()
+        input = equationInput.toCharArray()
+        check = equationToCheck!!.toCharArray()
         for (j in 0..6) {
-            if (input[j] == file[j]) {
+            if (input[j] == check[j]) {
                 result[j] = "зелена"
                 input[j] = '.'
-                file[j] = '.'
+                check[j] = '.'
             }
         }
         for (j in 0..6) {
             if (input[j] != '.') {
                 for (i in 0..6) {
-                    if (input[j] == file[i]) {
+                    if (input[j] == check[i]) {
                         result[j] = "жълта"
                         input[j] = ','
-                        file[i] = ','
+                        check[i] = ','
                     }
                 }
             }

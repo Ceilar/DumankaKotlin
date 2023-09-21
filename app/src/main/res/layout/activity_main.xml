@@ -136,8 +136,15 @@
 
     </androidx.viewpager2.widget.ViewPager2>
 
-
-
+    <Button
+        android:id="@+id/hintbutton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/question_mark2"
+        app:layout_constraintEnd_toStartOf="@+id/lightmode"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

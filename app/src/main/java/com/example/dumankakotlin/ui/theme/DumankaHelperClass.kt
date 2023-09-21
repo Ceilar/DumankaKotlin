@@ -27,6 +27,7 @@ object DumankaHelperClass{
     lateinit var storageReference: StorageReference
     var storage: FirebaseStorage? = null
     var list: ArrayList<String>? = null
+
     fun initialiseFileReader(context: Context) {
         Log.v("32131","sadsa")
         mAuth = FirebaseAuth.getInstance()
@@ -115,6 +116,7 @@ object DumankaHelperClass{
                 }
             }
         }
+
         return result
     }
 

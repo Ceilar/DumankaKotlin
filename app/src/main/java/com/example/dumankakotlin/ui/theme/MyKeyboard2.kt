@@ -170,12 +170,6 @@ class MyKeyboard2 @JvmOverloads constructor(
                     )
                 )
                 "я" -> inputConnection!!.commitText("я", 1)
-              /*  "я" -> inputConnection!!.sendKeyEvent(
-                    KeyEvent(
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_0
-                    )
-                )*/
                 "в" -> inputConnection!!.commitText("в", 1)
                 "е" -> inputConnection!!.commitText("е", 1)
                 "р" -> inputConnection!!.commitText("р", 1)
@@ -208,7 +202,6 @@ class MyKeyboard2 @JvmOverloads constructor(
             }
         }
     }
-
     fun setInputConnection(ic: InputConnection?) {
         inputConnection = ic
     }

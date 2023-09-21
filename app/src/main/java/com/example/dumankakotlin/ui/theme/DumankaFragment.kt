@@ -132,6 +132,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
             wordtocheck = list!!.random().toString()
 
 
+
             var textView: TextView = binding.textView3
             textView.isVisible = false
             if (user.email == "dumanka.reshavanka@gmail.com") {
@@ -157,6 +158,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
         if (row == 0) {
             mykeyboard2 = binding.keyboard2
             mykeyboard2!!.visibility = View.VISIBLE
+
         }
         val j = row * 5
         for (i in 0..4) {

@@ -1,11 +1,16 @@
 package com.example.dumankakotlin
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Switch
+import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
@@ -30,6 +35,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var vpager: ViewPager2
     private lateinit var equations: Equations
     private var viewPagerAdapter: ViewPagerAdapter? = null
+    private lateinit var hintbtn: Button
+    private lateinit var videolayoutbtn: LinearLayout
     private lateinit var profilebtn: Button
     private lateinit var myPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
@@ -54,8 +61,9 @@ class MainActivity : AppCompatActivity() {
             FirebaseDatabase.getInstance("https://dumankakotlin-5d76b-default-rtdb.europe-west1.firebasedatabase.app/")
         myRef = database.getReference("users")
         storage = FirebaseStorage.getInstance("gs://dumankakotlin-5d76b.appspot.com")
-        checkUserName()
+
         profilebtn = findViewById(R.id.profilebtn)
+        hintbtn = findViewById(R.id.hintbutton)
         switchBtn = findViewById(R.id.switchbtn)
         wordbtn = findViewById(R.id.wordbtn)
         mathbtn = findViewById(R.id.mathbtn)
@@ -97,6 +105,32 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         })
 
+        hintbtn.setOnClickListener {
+            val builder1 = AlertDialog.Builder(this)
+            val dialogView: View = LayoutInflater.from(this).inflate(R.layout.videowindow, null)
+            builder1.setView(dialogView)
+            val alertDialog = builder1.create()
+            val videoLayout: LinearLayout = dialogView.findViewById(R.id.videolayout)
+            val video1: VideoView = dialogView.findViewById(R.id.videoView)
+            video1.setVideoURI(
+                Uri.parse("android.resource://"
+                    + packageName + "/" + R.raw.dumankavideo4))
+
+            videoLayout.setOnClickListener{
+                if(alertDialog.isShowing){
+                    alertDialog.dismiss()
+                }
+            }
+            video1.requestFocus()
+            video1.start()
+            alertDialog.show()
+            video1.setOnCompletionListener {
+                alertDialog.dismiss()
+            }
+
+        }
+
+        checkUserName()
         vpager.adapter = viewPagerAdapter
         vpager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
