@@ -10,11 +10,12 @@
         android:id="@+id/profilebtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/profile"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"/>
+        android:background="@drawable/profile"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/start1"
         android:layout_width="100dp"
@@ -22,13 +23,14 @@
         android:layout_marginBottom="80dp"
         android:background="@drawable/startbtnbackground"
         android:gravity="center"
-        app:layout_constraintRight_toRightOf="parent"
-        android:text="Старт!"
         android:includeFontPadding="false"
+        android:text="Старт!"
         android:textAlignment="center"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -72,13 +74,13 @@
 
     <Switch
         android:id="@+id/switchbtn"
-        android:scaleX="1.5"
-        android:scaleY="1.5"
         android:layout_width="48dp"
         android:layout_height="28dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="48dp"
         android:layout_marginRight="48dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
@@ -88,25 +90,25 @@
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginTop="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="6dp"
+        android:background="@drawable/sun"
         android:maxWidth="36dp"
         android:maxHeight="36dp"
-        android:background="@drawable/sun"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="6dp"
-        android:layout_marginEnd="6dp"
         app:layout_constraintEnd_toStartOf="@+id/switchbtn"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <View
         android:id="@+id/darkmode"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="9dp"
         android:background="@drawable/dark"
         android:maxWidth="32dp"
         android:maxHeight="32dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
         app:layout_constraintStart_toEndOf="@+id/switchbtn"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
@@ -127,8 +129,8 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintHeight_percent="1.0"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="1.0"
         app:layout_constraintTop_toBottomOf="@id/linearLayout"
         app:layout_constraintVertical_bias="0.076"
         tools:layout_editor_absoluteX="-12dp">
@@ -145,6 +147,13 @@
         android:background="@drawable/question_mark2"
         app:layout_constraintEnd_toStartOf="@+id/lightmode"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.14" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

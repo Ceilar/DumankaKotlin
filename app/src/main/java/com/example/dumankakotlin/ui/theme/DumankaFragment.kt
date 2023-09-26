@@ -154,7 +154,7 @@ class DumankaFragment : Fragment(R.layout.fragment_dumanka) {
     }
 
     private fun startdumanka(list1: ArrayList<EditText>, textword: EditText, row: Int) {
-        // guesswasmade = false
+        guesswasmade = false
         if (row == 0) {
             mykeyboard2 = binding.keyboard2
             mykeyboard2!!.visibility = View.VISIBLE
